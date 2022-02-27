@@ -6,11 +6,11 @@ Presentation Link: https://docs.google.com/presentation/d/1DhafRC4UR8gYSsYWFzmQp
 
 ### Selected topic
 
-  * Stock Price Prediction
+  * **Stock Price Prediction**
 
 ### Reasons the topic was selected
 
-Statistics:
+Facts & Figures:
 - $95 trillion is the global stock market value.
 - The current stock market crash interrupted a 10-year record.
 - On average, the stock market performs the poorest in September.
@@ -120,6 +120,36 @@ The data points that have no statistically significant correlation with stock pr
 
 The remaining data points have been used to train the machine learnign and neural network models.
 
+### Images from the initial analysis
+
+#### Initial DataFrame
+
+![df1](Resources/df1.png)
+
+#### Data Types
+
+![df2](Resources/df2.png)
+
+#### Replace NaNs with Average values
+
+![df3](Resources/df3.png)
+
+#### Drop remainign rows wuth Null values
+
+![df4](Resources/df4.png)
+
+#### Descriptive Statistics
+
+![df5](Resources/df5.png)
+
+#### Remove rows with outliers and incorrect stock prices
+
+![df6](Resources/df6.png)
+
+#### Drop columns that are not used for model training 
+
+![df7](Resources/df7.png)
+
 ### Description of how data was split into training and testing sets
 
 The cleaned data set has been split into the trainign and testing data sets with the **train_test_split** method from the **sklearn.model_selection** library. The standard split is 75% of the data into the training set and 25% of the data into the testing set.
@@ -142,15 +172,6 @@ Adjusted R-Square Method has been used to evaluate the model accuracy. The Rando
 
 Then, we tried to run neural network models with various layers, number of neurons, activation function, and number of epochs. The neural netowrk model has generated even better results and has been chosen for the final app.
 
-### Explanation of changes in model choice (if changes occurred between the Segment 2 and Segment 3 deliverable)
-NEED
-
-### Description of how they have trained the model thus far, and any additional training that will take place
-NEED
-
-### Description of current accuracy score
-NEED
-
 ### Model Overview 
 
 A provisional Deep Learning Regression Model has been developed (see **LOCAL_SERVER/ML_Model.ipynb**)
@@ -167,13 +188,17 @@ The **RELU** activation function is used on all the **Hidden layers**.
 
 The **RELU** activation function is used on all the **Output layer**. 
 
-Since this is a regression analysis, RELU and SELU activation functions generate adequate results.
+Since this is a regression analysis, RELU activation function generate adequate results.
 
 **The Neural Network Model:**
 
 ![Model](Resources/model_white.png)
 
 The model is run **100 epochs** to train.
+
+We have used the **adam** optimization function, which uses a gradient descent approach, to improve the training of the network model and prevent the model from focusing on weaker features. 
+
+We have used the **mean_absolute_error** loss metric to evaluate the performance of the model through each epoch. 
 
 ### Data Transformation
 
@@ -183,25 +208,94 @@ The model is run **100 epochs** to train.
 
 Based on the Elbow Curve, **k=6** has been selected. We have assigned a **Cluster Class** to each Stock Ticker in the dataset accordingly.
 
-### Model Training and Saving
+#### Clustering
+
+![Clustering](Resources/clustering.png)
+
+#### DataFrame with appended Class(cluster) column
+
+![DF_clustering](Resources/df_clusters.png)
+
+### Explanation of changes in model choice (if changes occurred between the Segment 2 and Segment 3 deliverable)
+
+Initially, the model was developed based on 8 features:
+
+- Trailing P/E
+- Return on Assets
+- Return on Equity
+- Forward P/E
+- PEG Ratio
+- Enterprise Value/EBITDA
+- Diluted EPS
+- Earnings Growth
+
+We have also used the SELU activation functions in layers 2 & 3 and in the output layer of the model.
+
+The initial model accuracy was lower than expected at 0.07 Adjusted R-Sqaure. Hence, we have expanded the list of features and replaced the SELU activation function with RELU at all layers, which generated higher accuracy.
+
+Another major change described in **Data Transformation** section was introducing initial data transformation with unsupervised learning breaking the data into 6 clusters and fitting individual model for each cluster.
+
+### Description of how we have trained the model thus far, and any additional training that will take place
+
+Before training the model, we ensured that the data was clean and separated it into Trainign and Test datasets (see **Description of how data was split into training and testing sets**). The datasets have been normalized with the StandardScaler (see **Description of preliminary data preprocessing**). Then, the datasets have been clustered into 6 clusters based on the unsupervised machine learning model (see **Data transformation**).
+
+**Data Scaling**
+
+![Scaler](Resources/scaler.png)
 
 For each Cluster, a unique Deep Learning Model has been trained based on the Cluster data subset. The Models for each Cluster have been saved (total of 6). The Scalers for each Cluster have been saved (total of 6).
 
 For new stock tickers that are not part of the overall dataset and may be potentially entered by the App users, a 7th model has been trained. The 7th model is based on the overall dateset (without clustering). Both, the model and scaler have also been saved.
 
-### Model Evaluation
+The model training was conducted on 100 epochs. The **loss function** (*mean_absolute_error*) has shown the following improvements for each cluster model:
+
+1. Model 0: Epoch 1: 25.7397; Epoch 100: 4.3742
+2. Model 1: Epoch 1: 57.4215; Epoch 100: 18.8826
+3. Model 2: Epoch 1: 47.7136; Epoch 100: 11.2194
+4. Model 3: Epoch 1: 42.6148; Epoch 100: 2.6821
+5. Model 4: Epoch 1: 40.5972; Epoch 100: 6.6608
+6. Model 5: Epoch 1: 44.1796; Epoch 100: 7.3443
+7. Model 6: Epoch 1: 27.2992; Epoch 100: 7.3515
+
+![Training](Resources/training.png)
+
+### Description of current accuracy score (Model Evaluation)
 
 Adjusted R-Square has been used to evaluate the each Model accuracy. 
 
-The R-Square results are below.
+R Square measures how much variability in dependent variable can be explained by the model. It is the square of the Correlation Coefficient(R). It is is a good measure to determine how well the model fits the dependent variables. However, it does not take into consideration of overfitting problem. 
+
+In our case, the regression model has many feature (independent) variables and it may fit well to the training data but performs badly for testing data. As a result, the Adjusted R Square has been used to prevent potential overfitting issues.
+
+The R-Square results for each model are shown below.
 
 1. Model 0: 0.34
+
+![Model1](Resources/rsquared1.png)
+
 2. Model 1: 0.23
+
+![Model2](Resources/rsquared2.png)
+
 3. Model 2: 0.71
+
+![Model3](Resources/rsquared3.png)
+
 4. Model 3: 0.99
+
+![Model4](Resources/rsquared4.png)
+
 5. Model 4: 0.37
+
+![Model5](Resources/rsquared5.png)
+
 6. Model 5: 0.62
+
+![Model6](Resources/rsquared6.png)
+
 7. Model 6: 0.33
+
+![Model7](Resources/rsquared7.png)
 
 ### Overall User Experience
 
@@ -213,13 +307,23 @@ The R-Square results are below.
 4. The predicted and current stock price are displayed for the user
 5. If predicted stock price > current stock price, a BUY recommendation generated and vise versa
 
-**The working Prototype 2.0 User Interface (localhost deployment):**
-
-![App](Resources/screen2.png)
-
-### Prototype 1.0 App Deployment on HEROKU (to be updated)
+### App Deployment on HEROKU 
 
 [https://stockoptimizer.herokuapp.com/](https://stockoptimizer.herokuapp.com/)
+
+### App User Interface
+
+#### Stock Ticker Entry Screen
+![App1](Resources/screen1.png)
+
+#### Stock Chart Screen
+![App2](Resources/screen2.png)
+
+#### Help Screen
+![App3](Resources/screen3.png)
+
+#### Contacts Screen
+![App4](Resources/screen4.png)
 
 ## Dashboard
 
@@ -228,6 +332,7 @@ The R-Square results are below.
 https://docs.google.com/presentation/d/1hXU28unDzPH3O0gM9gG7vCKDZXwtV4GZLEZ8WskptY0/edit?usp=sharing
 
 ### Description of the tool(s) that are used to create final dashboard
+
 NEED DESCRIPTION
 
 We used Java Script and Python Script to create our dashboard.
@@ -241,12 +346,10 @@ Plotly was used in our code to create an interactive graph based on input of the
 5. Python Scripts
 
 ### Description of interactive element(s)
+
 When opening the homepage the user is greeted with a banner on top with title "Stock Return Optimizer".  Below the title the website will return recommendation for the ticker "adbe" automatically.  To get recommendations for a different ticker the user must enter the ticker in the open text block and click the "Fetch Stock" button to run analysis on the specified stock.
 
 For the charting interface, the user must input the ticker, period of time and interval of price pulls.  By inserting the values in these 3 fields and clicking "fetch stock", a chart will generate.
 
-### Images from the initial analysis
-NEED
 
-### Data (images or report) from the machine learning task
-NEED
+
