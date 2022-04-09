@@ -2,6 +2,10 @@
 
 Presentation Link: https://docs.google.com/presentation/d/1DhafRC4UR8gYSsYWFzmQp2ccarPR_o2Tjhe-K0d2gU8/edit?usp=sharing
 
+## Purpose of the project
+
+Develop a Deep Learning Web App to provide a data-driven buy/sell recommendation to the end user on a selected stock on their interest
+
 # Overview/Outline
 
 ### Selected topic
