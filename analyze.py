@@ -4,7 +4,7 @@ import json
 import os
 import requests
 #from config import api_key, postgres_pass#, heroku_pass, heroku_URI
-import yfinance as yf
+import yfinance as yf # Yahoo Finance Library
 import psycopg2
 from sqlalchemy import create_engine
 from sklearn.preprocessing import StandardScaler
@@ -290,7 +290,7 @@ def recommendation(cp, pp):
     return rec
 
 def run_all(ticker):
-
+    # Run all functions
     initialize_table()
     data_predict(ticker)
     #create_plot()
